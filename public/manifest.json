@@ -1,0 +1,15 @@
+{
+  "short_name": "CBFDDecomp",
+  "name": "Conker's Bad Fur Day Decomp",
+  "icons": [
+    {
+      "src": "00007F5A.bin.png",
+      "type": "image/png",
+      "sizes": "32x32"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

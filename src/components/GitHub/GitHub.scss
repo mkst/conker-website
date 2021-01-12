@@ -1,0 +1,44 @@
+.github {
+  background-color: rgba(255,255,255,0.5);
+
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 0.1em;
+  margin-right: 1em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  cursor: pointer;
+
+  // border: 1px solid black;
+  border-radius: 0.1em;
+
+  text-decoration: none;
+  // font-family: Segoe UI,Helvetica,Arial,sans-serif;
+  font-family: CCComicrazy;
+
+  font-size: 1.25em;
+
+  transition: transform 1s;
+
+  background-color: #333;
+
+  box-shadow: 0.1em 0.1em 0.1em rgba(40,40,40,0.3);
+}
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
+.github-text {
+  padding-left: 0.35em;
+  color: white;
+}
+
+.github-icon {
+  color: white;
+}
+
+.github:hover .github-text, .github:hover .github-icon {
+  color: #eee;
+}

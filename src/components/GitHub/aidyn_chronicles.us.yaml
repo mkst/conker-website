@@ -1,0 +1,23 @@
+name: Aidyn_Chronicles (North America)
+basename: aidyn_chronicles
+options:
+  find_file_boundaries: True
+  compiler: "IDO"
+  modes:
+  - all
+segments:
+  - name: header
+    type: header
+    start: 0x0
+    vram: 0
+    files:
+    - [0x0, header, header]
+  - [0x40, bin] # tbd
+  - type:  code
+    start: 0x00001000
+    vram:  0x80000400
+    files:
+    - [0x00001000, "bin"] # TODO: figure out whats code and whats not
+    - [0x00003300, "asm"]
+  - [0x0CDAB0, "bin"] # TODO: figure out the rest of the file
+  - [0x2000000]

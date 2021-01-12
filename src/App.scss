@@ -1,0 +1,31 @@
+// via https://www.onlinewebfonts.com/download/03e56e6a9578c7e735af7c4befe478f7
+@font-face {
+  font-family: 'CCComicrazy';
+  src:  url('assets/fonts/cccrazycomic.woff2') format('woff2'),
+        url('assets/fonts/cccrazycomic.woff') format('woff');
+}
+
+// via https://fontsgeek.com/fonts/Lithos-Bold
+@font-face {
+  font-family: 'Lithos Black Bold';
+  src:  url('assets/fonts/lithos_black_bold.otf') format('opentype');
+}
+
+.app {
+  height: 100%;
+  width: 100%;
+  min-height: 600px;
+  min-width: 600px;
+
+  // css hack
+  padding-top: 0.01em;
+  // honeycomb background
+  background-image: url('assets/images/0000C38E.bin.png');
+  background-size: 128px 64px;
+  background-repeat: repeat;
+}
+
+/* plotly */
+div.plotly-notifier {
+  visibility: hidden;
+}
