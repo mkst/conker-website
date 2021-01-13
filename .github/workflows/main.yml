@@ -12,7 +12,7 @@ jobs:
     - name: Update summary.json
       uses: docker://docker.io/python:alpine
       with:
-        args: python3 progress/summary.py progress/data public/summary.json
+        args: python3 progress/summary.py progress/data public
     - name: Build
       run: |
         npm ci

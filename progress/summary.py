@@ -25,6 +25,9 @@ def parse_file(infile):
                 summary[idx]['c_functions'] += 1
             summary[idx]['total'] += length
             summary[idx]['total_functions'] += 1
+        for i, smry in enumerate(summary):
+            percent = 100 * smry['c'] / smry['total']
+            summary[i]['percent'] = float(f"{percent:.4f}")
     return summary
 
 def parse_dir(indir):
@@ -45,8 +48,7 @@ def parse_dir(indir):
             'summary': parse_file(os.path.join(indir, filename))
         })
     # sort based on date to save doing it in javascript
-    summary = sorted(summary, key = lambda x: x['date'])
-    return { 'summary' : summary }
+    return list(sorted(summary, key = lambda x: x['date']))
 
 
 if __name__ == '__main__':
@@ -54,7 +56,18 @@ if __name__ == '__main__':
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('indir', type=str,
                         help="source directory containing progress CSV file(s)")
-    parser.add_argument('outfile', type=argparse.FileType('w'),
-                        help='file to output json summary to')
+    parser.add_argument('outdir', type=str,
+                        help='directory to output json summary to')
     args = parser.parse_args()
-    json.dump(parse_dir(args.indir), args.outfile)
+
+    summary = parse_dir(args.indir)
+    summary_filename = os.path.join(args.outdir, "summary.json")
+    with open(summary_filename, "w") as o:
+        print(f"Writing {summary_filename}")
+        json.dump({'summary': summary}, o)
+    if len(summary) > 0:
+        latest = summary[-1]
+        latest_filename = os.path.join(args.outdir, "latest.json")
+        print(f"Writing {latest_filename}")
+        with open(latest_filename, "w") as o:
+            json.dump(latest, o)
