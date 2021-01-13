@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 
 import {CurrentProgressPlot} from '../../plots/CurrentProgress'
 import {HistoricProgressPlot} from '../../plots/HistoricProgress'
@@ -8,19 +8,25 @@ import './Progress.scss'
 
 export const ProgressPanel = () => {
 
-  const summary = require('../../assets/data/summary.json')
+  const [data, setData] = useState(null)
+
+  useEffect(() => {
+    fetch('/summary.json')
+    .then(resp => resp.json())
+    .then(setData)
+  }, [setData])
 
   return (
     <div className="panel">
       <div className="panel-headline">
         CBFD Decomp Current Progress:
       </div>
-      <CurrentProgressPlot data={summary} />
+      <CurrentProgressPlot data={data} />
 
       <div className="panel-headline">
         Historic Progress:
       </div>
-      <HistoricProgressPlot data={summary} />
+      <HistoricProgressPlot data={data} />
     </div>
   )
 }
