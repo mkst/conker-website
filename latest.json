@@ -1,1 +1,1 @@
-{"date": 1611220431, "hash": "504417ffe5f355829ffc7edc687e50b58786c1f3", "summary": [{"version": "us", "c": 76148, "total": 2072880, "c_functions": 976, "total_functions": 5323, "percent": 3.6735}], "sections": "game"}
+{"date": 1611344778, "hash": "8a4707ebd7f37814cddee825b6139ab0749329f4", "summary": [{"version": "us", "c": 85096, "total": 2072880, "c_functions": 1030, "total_functions": 5323, "percent": 4.1052}], "sections": "game"}
