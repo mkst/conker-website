@@ -27,3 +27,6 @@ yarn-error.log*
 # generated
 public/latest.json
 public/summary.json
+
+# symlinks
+progress/data/progress.csv
