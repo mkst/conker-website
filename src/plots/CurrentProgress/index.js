@@ -1,35 +1,53 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import Plot from 'react-plotly.js'
 
 import './CurrentProgress.scss'
 
 export const CurrentProgressPlot = ({
-  data
+  data,
+  version,
+  section
 }) => {
 
-  if ((data === null) || (data == null)) {
-    return null
-  }
+  const [plotData, setPlotData] = useState(null)
+  const [plot, setPlot] = useState(null)
 
-  if (Object.keys(data).indexOf("summary") === -1) {
-    return null
-  }
+  useEffect(() => {
+    if ((data === null) || (data == null)) {
+      return null
+    }
+    if (Object.keys(data).indexOf("progress") === -1) {
+      return null
+    }
+    for (var i = 0; i < data.progress.length; i++) {
+        if (data.progress[i].version === version) {
+          const sections = data.progress[i].sections
 
-  const lastData = data.summary[data.summary.length - 1].summary[0]
+          for (var j = 0; j < sections.length; j++) {
+            if (sections[j].section === section) {
+              setPlotData({
+                c: sections[j].c,
+                c_functions: sections[j].c_functions,
+                percent: sections[j].percent,
+                section: sections[j].section,
+                total: sections[j].total,
+                total_functions: sections[j].total_functions
+              })
+              break
+            }
+          }
+        }
+    }
+  }, [data, version, section])
 
-  const c_size = lastData["c"]
-  const total = lastData["total"]
-
-  const c_count = lastData["c_functions"]
-  const total_functions = lastData["total_functions"]
-
-  const percent = c_size / total * 100
-
-  return <div className="current-progress">
-    <Plot
+  useEffect(() => {
+    if (plotData === null) {
+      return;
+    }
+    setPlot(<Plot
       data={[{
-        title: percent.toFixed(2) + '<br>%',
-        values: [c_size, total - c_size],
+        title: plotData.percent.toFixed(2) + '<br>%',
+        values: [plotData.c, plotData.total - plotData.c],
         labels: ['C', 'ASM'],
         type: 'pie',
         hole: 0.66,
@@ -46,8 +64,8 @@ export const CurrentProgressPlot = ({
         name: 'bytes'
       },
       {
-        title: c_count + '<br>of<br>' + total_functions,
-        values: [c_count, total_functions - c_count],
+        title: plotData.c_functions + '<br>of<br>' + plotData.total_functions,
+        values: [plotData.c_functions, plotData.total_functions - plotData.c_functions],
         labels: ['C', 'ASM'],
         type: 'pie',
         hole: 0.66,
@@ -78,6 +96,10 @@ export const CurrentProgressPlot = ({
       }}
       config={{displayModeBar: false, responsive: true}}
       style={{width: "100%", height: "100%"}}
-    />
+    />)
+  }, [plotData])
+
+  return <div className="current-progress">
+    {plot}
   </div>
 }

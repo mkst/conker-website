@@ -42,7 +42,7 @@ export const FaqPanel = () => {
         Q) Damn, this website is horrible.
       </div>
       <div className="answer">
-        A) Not really a question... But yeah, feel free to improve it!
+        A) Not really a question... But yeah, feel free to <a href="https://github.com/mkst/conker-website" target="_blank" rel="noreferrer">improve it!</a>
       </div>
 
     </div>
