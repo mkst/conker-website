@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import Plot from 'react-plotly.js'
 
 import './CurrentProgress.scss'
@@ -14,10 +14,10 @@ export const CurrentProgressPlot = ({
 
   useEffect(() => {
     if ((data === null) || (data == null)) {
-      return null
+      return
     }
     if (Object.keys(data).indexOf("progress") === -1) {
-      return null
+      return
     }
     for (var i = 0; i < data.progress.length; i++) {
         if (data.progress[i].version === version) {
@@ -46,7 +46,10 @@ export const CurrentProgressPlot = ({
     }
     setPlot(<Plot
       data={[{
-        title: plotData.percent.toFixed(2) + '<br>%',
+        title: {
+          text: plotData.percent.toFixed(2) + '<br>%',
+          position: 'middle center'
+        },
         values: [plotData.c, plotData.total - plotData.c],
         labels: ['C', 'ASM'],
         type: 'pie',
@@ -64,7 +67,10 @@ export const CurrentProgressPlot = ({
         name: 'bytes'
       },
       {
-        title: plotData.c_functions + '<br>of<br>' + plotData.total_functions,
+        title: {
+          text: plotData.c_functions + '<br>of<br>' + plotData.total_functions,
+          position: 'middle center'
+        },
         values: [plotData.c_functions, plotData.total_functions - plotData.c_functions],
         labels: ['C', 'ASM'],
         type: 'pie',
