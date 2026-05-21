@@ -1,13 +1,12 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 
-import {CurrentProgressPlot} from '../../plots/CurrentProgress'
-import {HistoricProgressPlot} from '../../plots/HistoricProgress'
+import { CurrentProgressPlot } from '../../plots/CurrentProgress'
+import { HistoricProgressPlot } from '../../plots/HistoricProgress'
 
 import '../Panels.scss'
 import './Progress.scss'
 
 export const ProgressPanel = () => {
-
   const [historicData, setHistoricData] = useState(null)
   const [latestData, setLatestData] = useState(null)
 
