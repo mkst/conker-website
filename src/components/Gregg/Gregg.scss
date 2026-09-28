@@ -1,0 +1,84 @@
+// Gregg the Grim Reaper watches the conversation from the top corner of the FAQ,
+// leaning over the panel's edge. Hover (or tap) and he hops up and says his piece.
+@import '../../styles/bubble-tail';
+
+.gregg {
+  position: absolute;
+  top: -1.6em;
+  right: clamp(0.6em, 3vw, 1.6em);
+  width: clamp(64px, 11vw, 96px);
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+
+  // less room above the panel on phones: keep his scythe off the chapter pills
+  @media (max-width: 640px) {
+    top: 0.4em;
+  }
+
+  &:focus-visible {
+    outline: none;
+
+    .gregg-peek img {
+      filter: drop-shadow(0 0 6px #f3f390) drop-shadow(2px 5px 4px rgba(0, 0, 0, 0.35));
+    }
+  }
+}
+
+.gregg-peek {
+  display: block;
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(2px 5px 4px rgba(0, 0, 0, 0.35));
+    transform-origin: 50% 100%;
+    transition: transform 0.3s cubic-bezier(0.2, 1.8, 0.4, 1);
+    animation: gregg-bob 3.2s ease-in-out infinite;
+  }
+}
+
+.gregg.open .gregg-peek img {
+  animation: none;
+  transform: translateY(-10px) rotate(-3deg);
+}
+
+@keyframes gregg-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+// his speech bubble, to his left, with a tail pointing back at him
+// (scoped under .gregg so it wins over the shared .speech-bubble styles)
+.gregg .gregg-bubble {
+  position: absolute;
+  right: 88%;
+  top: 30%;
+  width: max-content;
+  max-width: min(17em, 62vw);
+  padding: 0.9em 1.6em;
+  font-size: 0.9rem;
+  text-align: left;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.6);
+  transform-origin: bottom right;
+  transition: opacity 0.15s, transform 0.25s cubic-bezier(0.2, 1.6, 0.4, 1);
+  z-index: 3;
+
+  // his bubble is a full oval, whose edge sits a little higher at the ends
+  @include bubble-tail(right, 73.8%);
+}
+
+.gregg.open .gregg-bubble {
+  opacity: 1;
+  transform: none;
+}
+
+// the censored word in his line
+.gregg-bleep {
+  color: #c4141c;
+}

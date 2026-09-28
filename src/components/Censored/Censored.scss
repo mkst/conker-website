@@ -1,0 +1,79 @@
+.censored {
+  position: relative;
+  display: inline-grid;
+  padding: 0 0.1em;
+  border: none;
+  background: none;
+  font: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  color: #c4141c;
+  cursor: pointer;
+
+  // both spellings share one grid cell, so swapping them doesn't shift the text
+  > span {
+    grid-area: 1 / 1;
+    text-align: center;
+  }
+}
+
+.censored-word {
+  opacity: 0;
+}
+
+.censored:hover,
+.censored:focus-visible {
+  outline: none;
+
+  .censored-symbols {
+    animation: censor-symbols 0.6s steps(1) both;
+  }
+
+  .censored-word {
+    animation: censor-word 0.6s steps(1) both;
+  }
+}
+
+.censored:focus-visible {
+  box-shadow: 0 2px 0 #c4141c;
+}
+
+// the bleep: a quick shake
+.censored.bleeping {
+  animation: censor-shake 0.35s linear;
+}
+
+// the real word flickers through the symbols, then stays until you move away
+// (the two animations are exact opposites, so only one spelling shows at a time)
+@keyframes censor-symbols {
+  0% { opacity: 1; }
+  20% { opacity: 0; }
+  35% { opacity: 1; }
+  55% { opacity: 0; }
+  70% { opacity: 1; }
+  85%, 100% { opacity: 0; }
+}
+
+@keyframes censor-word {
+  0% { opacity: 0; }
+  20% { opacity: 1; }
+  35% { opacity: 0; }
+  55% { opacity: 1; }
+  70% { opacity: 0; }
+  85%, 100% { opacity: 1; }
+}
+
+@keyframes censor-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px) rotate(-2deg); }
+  75% { transform: translateX(3px) rotate(2deg); }
+}
+
+// without animation, just swap the spellings
+@media (prefers-reduced-motion: reduce) {
+  .censored:hover,
+  .censored:focus-visible {
+    .censored-symbols { opacity: 0; }
+    .censored-word { opacity: 1; }
+  }
+}

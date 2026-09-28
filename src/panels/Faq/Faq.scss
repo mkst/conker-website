@@ -1,65 +1,68 @@
+@import '../../styles/bubble-tail';
+
+// the FAQ as a conversation: Conker asks from the left, Birdy answers from the right
 .faq {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  // Gregg sits in the top corner
+  position: relative;
+
+  // keep the heading clear of him
+  .panel-headline {
+    padding-right: clamp(64px, 12vw, 110px);
+  }
 }
 
-// in-game speech bubbles (see .speech-bubble), with a tail
+.faq-line {
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(0.4em, 2vw, 1em);
+  margin-top: 1.9em;
+}
+
+.faq .gregg + .faq-line {
+  margin-top: 0.3em;
+}
+
+.faq-reply {
+  flex-direction: row-reverse;
+  margin-top: 1.3em;
+}
+
+// in-game speech bubbles (see .speech-bubble), with a tail at the speaker's end
 .faq .question,
 .faq .answer {
   max-width: 88%;
-  margin: 0;
+  margin: 0 0 1.6em;
   border-radius: 42% / 50%;
   padding: 1.3em 3.2em;
 
-  // the tail: a dark triangle with a white one inset over it
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: calc(100% - 6px);
-    width: 26px;
-    height: 24px;
+  // same oval, but less side padding so phone-width bubbles aren't a sliver
+  @media (max-width: 640px) {
+    max-width: 100%;
+    padding: 1.1em 1.9em;
   }
 
-  &::before {
-    background: rgba(0, 0, 0, 0.75);
-  }
-
-  &::after {
-    background: #e6e6e6;
-    transform: scale(0.8) translateY(-4px);
-  }
 }
 
 .faq .question {
-  margin-top: 1.9em;
   font-size: 1.1em;
+  @include bubble-tail(left);
 
-  &::before,
-  &::after {
-    left: 18%;
-    clip-path: polygon(0 0, 100% 0, 10% 100%);
+  // phone bubbles are tall, so their ends curve steeply: sit a little further round
+  @media (max-width: 640px) {
+    @include bubble-tail(left, 87.3%, 40deg, 14%);
   }
 }
 
 // answers are written in normal case - they're long
 .faq .answer {
-  align-self: flex-end;
-  margin-top: 1.3em;
   text-transform: none;
   letter-spacing: 0;
   line-height: 1.5;
+  @include bubble-tail(right);
 
-  &::before,
-  &::after {
-    right: 18%;
-    clip-path: polygon(0 0, 100% 0, 90% 100%);
+  @media (max-width: 640px) {
+    @include bubble-tail(right, 87.3%, 40deg, 14%);
   }
-}
-
-.faq .panel-headline + .question {
-  margin-top: 0.3em;
 }
 
 .answer a {
