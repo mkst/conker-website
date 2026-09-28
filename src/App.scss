@@ -3,29 +3,127 @@
   font-family: 'CCComicrazy';
   src:  url('assets/fonts/cccrazycomic.woff2') format('woff2'),
         url('assets/fonts/cccrazycomic.woff') format('woff');
+  font-display: swap;
 }
 
 // via https://fontsgeek.com/fonts/Lithos-Bold
 @font-face {
   font-family: 'Lithos Black Bold';
   src:  url('assets/fonts/lithos_black_bold.otf') format('opentype');
+  font-display: swap;
+}
+
+:root {
+  // Conker himself
+  --fur-dark: #a8360c;
+  // the hive, sampled from the honeycomb texture (0000C38E.bin.png)
+  --hive-lemon: #fefa08;
+  --hive-amber: #fec008;
+  --hive-gold: #e1a508;
+  --hive-bronze: #ba8308;
+  --hive-dark: #795408;
+  // health
+  --choc: #883d1d;
+  --choc-light: #c8781e;
+  --choc-dark: #562404;
+  // N64 B button
+  --b-green: #1f9e4a;
+
+  --ink: #2b1606;
+  --paper: #fffaf0;
+
+  // Lithos is the typeface of the game's logo and menus; the comic lettering
+  // is kept for speech bubbles, as in-game
+  --font-comic: 'CCComicrazy', 'Comic Sans MS', cursive;
+  --font-logo: 'Lithos Black Bold', 'Arial Black', sans-serif;
+  --font-num: var(--font-logo);
+
+  // colours below are sampled from the game's own pause screen (emulator capture)
+
+  // dark purple lettering (PAUSED)
+  --dark-face: linear-gradient(180deg, #6e4f7f 0%, #4b3759 38%, #1d1921 52%, #2a2130 70%, #3f2e3f 100%);
+  // warm stone lettering (the chapter name under PAUSED)
+  --silver-face: linear-gradient(180deg, #eef3ea 0%, #c3d5c0 30%, #a7a19d 50%, #80807a 56%, #b7bab3 100%);
+
+  // bevelled gold rim built from stacked drop-shadows (works on gradient text)
+  --gold-rim:
+    drop-shadow(0 -2px 0 #f3f390)
+    drop-shadow(2px 0 0 #f3b542)
+    drop-shadow(-2px 0 0 #f3b542)
+    drop-shadow(0 3px 0 #9a6a1c)
+    drop-shadow(0 0 1px #130c1a)
+    drop-shadow(3px 6px 6px rgba(0, 0, 0, 0.55));
+  --dark-rim:
+    drop-shadow(1.5px 0 0 #17190e)
+    drop-shadow(-1.5px 0 0 #17190e)
+    drop-shadow(0 1.5px 0 #17190e)
+    drop-shadow(0 -1.5px 0 #17190e)
+    drop-shadow(2px 3px 3px rgba(0, 0, 0, 0.45));
+
+  --soft-shadow: 0 10px 24px rgba(40, 15, 0, 0.45);
 }
 
 .app {
-  height: 100%;
+  // fill the screen even when the page is short, so the hive never runs out
+  min-height: 100vh;
   width: 100%;
-  min-height: 600px;
-  min-width: 600px;
+  box-sizing: border-box;
+  padding: 1.5em 16px 2em;
+  position: relative;
+  color: var(--ink);
+  font-family: var(--font-logo);
 
-  // css hack
-  padding-top: 0.01em;
-  // honeycomb background
+  // honeycomb background, straight out of the hive
+  background-color: var(--hive-amber);
   background-image: url('assets/images/0000C38E.bin.png');
   background-size: 128px 64px;
   background-repeat: repeat;
+
+  // warm vignette so the page content pops off the hive
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, rgba(255, 226, 122, 0.1) 30%, rgba(70, 30, 0, 0.6) 100%);
+  }
+
+  > * {
+    position: relative;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app,
+  .app * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+a {
+  color: var(--fur-dark);
 }
 
 /* plotly */
 div.plotly-notifier {
   visibility: hidden;
+}
+
+// the in-game speech bubble: white oval, soft grey shading toward a thin dark edge,
+// uppercase comic lettering
+.speech-bubble {
+  position: relative;
+  padding: 0.9em 1.6em;
+  font-family: var(--font-comic);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  line-height: 1.35;
+  color: #2d2d2d;
+  background: radial-gradient(ellipse at 50% 45%, #fbfbfb 0%, #fbfbfb 58%, #e1e1e1 80%, #c6c6c4 100%);
+  border-radius: 50% / 50%;
+  box-shadow:
+    0 0 0 1.5px rgba(0, 0, 0, 0.75),
+    0 0 6px 2px rgba(0, 0, 0, 0.35),
+    0 8px 16px rgba(40, 15, 0, 0.35);
 }

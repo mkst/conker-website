@@ -1,0 +1,53 @@
+// digit colours sampled from the game's HUD digit textures:
+// each is [highlight, body, shadow]
+$digits: (
+  '0': (#9be86a, #5e9627, #304517),
+  '1': (#c46ae0, #932bb4, #4a1260),
+  '2': (#faef70, #cca03a, #63521c),
+  '3': (#c9fbfb, #93eff0, #42707d),
+  '4': (#4a4ab0, #14135c, #0a0a30),
+  '5': (#d060a0, #8f2c62, #4a1232),
+  '6': (#e8401e, #990600, #4a0300),
+  '7': (#e0fbe4, #abf2bb, #6f8c5a),
+  '8': (#7ac4a2, #4a8067, #21433e),
+  '9': (#7f9ce0, #4b6599, #102c7f),
+  'dollar': (#b6ff5a, #75eb05, #3c710f),
+  'sym': (#fefb9e, #f7c753, #9a6a1c),
+);
+
+.game-number {
+  display: inline-block;
+  white-space: nowrap;
+  // pale gold rim, then a dark outline, then a soft drop shadow
+  filter:
+    drop-shadow(1.5px 0 0 #f7c753)
+    drop-shadow(-1.5px 0 0 #f7c753)
+    drop-shadow(0 1.5px 0 #f7c753)
+    drop-shadow(0 -1.5px 0 #fefb9e)
+    drop-shadow(1px 0 0 #1c1400)
+    drop-shadow(-1px 0 0 #1c1400)
+    drop-shadow(0 1px 0 #1c1400)
+    drop-shadow(0 -1px 0 #1c1400)
+    drop-shadow(2px 3px 3px rgba(0, 0, 0, 0.45));
+}
+
+.digit {
+  display: inline-block;
+  padding: 0.05em 0.01em 0;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  transform: rotate(var(--tilt));
+}
+
+@each $name, $c in $digits {
+  .digit-#{$name} {
+    background-image: linear-gradient(180deg, nth($c, 1) 0%, nth($c, 2) 50%, nth($c, 3) 100%);
+  }
+}
+
+// the $ texture is drawn bigger than the digits
+.digit-dollar {
+  font-size: 1.25em;
+  margin-right: 0.04em;
+}

@@ -15,28 +15,32 @@ export const ProgressPanel = () => {
   const section = 'game'
 
   useEffect(() => {
-    fetch('/commits.json')
+    fetch(`${process.env.PUBLIC_URL}/commits.json`)
     .then(resp => resp.json())
     .then(setHistoricData)
   }, [setHistoricData])
 
   useEffect(() => {
-    fetch('/latest.json')
+    fetch(`${process.env.PUBLIC_URL}/latest.json`)
     .then(resp => resp.json())
     .then(setLatestData)
   }, [setLatestData])
 
   return (
-    <div className="panel">
-      <div className="panel-headline">
-        CBFD Decomp Current Progress:
-      </div>
-      <CurrentProgressPlot data={latestData} version={version} section={section} />
+    <>
+      <section className="panel">
+        <h2 className="panel-headline">
+          Current Progress
+        </h2>
+        <CurrentProgressPlot data={latestData} version={version} section={section} />
+      </section>
 
-      <div className="panel-headline">
-        Historic Progress:
-      </div>
-      <HistoricProgressPlot data={historicData} version={version} section={section} />
-    </div>
+      <section className="panel">
+        <h2 className="panel-headline">
+          The Story So Far
+        </h2>
+        <HistoricProgressPlot data={historicData} version={version} section={section} />
+      </section>
+    </>
   )
 }

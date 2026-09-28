@@ -1,7 +1,20 @@
-import React, {useState, useEffect} from 'react'
-import Plot from 'react-plotly.js'
+import React from 'react'
+
+import {ChocolateMeter} from '../../components/ChocolateMeter'
+import {CashCounter} from '../../components/CashCounter'
 
 import './CurrentProgress.scss'
+
+const SECTION_NAMES = {
+  init: 'Init',
+  game: 'Game',
+  debugger: 'Debugger',
+  all: 'Whole ROM',
+}
+
+const sectionName = s => SECTION_NAMES[s] || s.charAt(0).toUpperCase() + s.slice(1)
+
+const fmt = n => n.toLocaleString('en-US')
 
 export const CurrentProgressPlot = ({
   data,
@@ -9,97 +22,51 @@ export const CurrentProgressPlot = ({
   section
 }) => {
 
-  const [plotData, setPlotData] = useState(null)
-  const [plot, setPlot] = useState(null)
+  const sections = data?.progress?.find(p => p.version === version)?.sections
+  const current = sections?.find(s => s.section === section)
 
-  useEffect(() => {
-    if ((data === null) || (data == null)) {
-      return null
-    }
-    if (Object.keys(data).indexOf("progress") === -1) {
-      return null
-    }
-    for (var i = 0; i < data.progress.length; i++) {
-        if (data.progress[i].version === version) {
-          const sections = data.progress[i].sections
+  if (!current) {
+    return <div className="current-progress loading">Loading the good stuff&hellip;</div>
+  }
 
-          for (var j = 0; j < sections.length; j++) {
-            if (sections[j].section === section) {
-              setPlotData({
-                c: sections[j].c,
-                c_functions: sections[j].c_functions,
-                percent: sections[j].percent,
-                section: sections[j].section,
-                total: sections[j].total,
-                total_functions: sections[j].total_functions
-              })
-              break
-            }
-          }
-        }
-    }
-  }, [data, version, section])
+  return (
+    <div className="current-progress">
+      <div className="hud">
+        <ChocolateMeter
+          percent={current.percent}
+          label="Bytes decompiled"
+          detail={`${fmt(current.c)} of ${fmt(current.total)} bytes in C (${sectionName(section).toLowerCase()} section)`} />
+        <CashCounter
+          value={current.c_functions}
+          total={current.total_functions}
+          label="Functions matched" />
+      </div>
 
-  useEffect(() => {
-    if (plotData === null) {
-      return;
-    }
-    setPlot(<Plot
-      data={[{
-        title: plotData.percent.toFixed(2) + '<br>%',
-        values: [plotData.c, plotData.total - plotData.c],
-        labels: ['C', 'ASM'],
-        type: 'pie',
-        hole: 0.66,
-        textinfo: 'none',
-        marker: {
-          colors: ['#ffde08', 'rgba(0,0,0,0.1)']
-        },
-        domain: {
-          row: 0,
-          column: 0
-        },
-        direction: 'clockwise',
-        sort: false,
-        name: 'bytes'
-      },
-      {
-        title: plotData.c_functions + '<br>of<br>' + plotData.total_functions,
-        values: [plotData.c_functions, plotData.total_functions - plotData.c_functions],
-        labels: ['C', 'ASM'],
-        type: 'pie',
-        hole: 0.66,
-        textinfo: 'none',
-        marker: {
-          colors: ['#ffde08', 'rgba(0,0,0,0.1)']
-        },
-        domain: {
-          row: 0,
-          column: 1
-        },
-        direction: 'clockwise',
-        sort: false,
-        name: 'functions'
-      }]}
-      layout={{
-        font: {
-          family : 'Lithos Black Bold',
-          size: 20,
-          color: '#111'
-        },
-        grid: {rows: 1, columns: 2},
-        margin: {'t': 10, 'b': '15', 'l': 0, 'r': 0},
-        showlegend: false,
-        paper_bgcolor: 'rgba(0,0,0,0)',
-        plot_bgcolor: 'rgba(0,0,0,0)',
-        hovermode: false,
-      }}
-      config={{displayModeBar: false, responsive: true}}
-      style={{width: "100%", height: "100%"}}
-    />)
-  }, [plotData])
+      <h3 className="chapters-title">Progress by section</h3>
+      <ul className="chapters">
+        {sections.map(s => (
+          <li key={s.section} className={'chapter' + (s.section === 'all' ? ' chapter-total' : '')}>
+            <span className="chapter-name">{sectionName(s.section)}</span>
+            <span className="chapter-bar">
+              <span className="chapter-bar-fill" style={{width: `${s.percent}%`}} />
+            </span>
+            <span className="chapter-percent">{s.percent.toFixed(1)}%</span>
+            <span className="chapter-funcs">{fmt(s.c_functions)} / {fmt(s.total_functions)} funcs</span>
+          </li>
+        ))}
+      </ul>
 
-  return <div className="current-progress">
-    {plot}
-  </div>
+      {data.date && (
+        <p className="panel-subtle last-updated">
+          Last updated {new Date(data.date * 1000).toLocaleDateString('en-GB', {day: 'numeric', month: 'long', year: 'numeric'})}
+          {data.hash && data.hash !== 'foo' && <>
+            {' · '}
+            <a href={`https://github.com/mkst/conker/commit/${data.hash}`} target="_blank" rel="noreferrer">
+              {data.hash.slice(0, 7)}
+            </a>
+          </>}
+        </p>
+      )}
+    </div>
+  )
 }

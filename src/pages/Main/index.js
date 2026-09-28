@@ -3,6 +3,7 @@ import React, {useState} from 'react'
 import "./Main.scss"
 
 import {RenderIf} from '../../components/RenderIf'
+import {Header} from '../../components/Header'
 import {Menu} from '../../components/Menu'
 
 import {InfoPanel} from '../../panels/Info'
@@ -15,18 +16,24 @@ export const MainPage = () => {
 
   return (
     <div className='main'>
+      <Header />
       <Menu activePanelHook={[activePanel, setActivePanel] } />
 
-      <RenderIf condition={activePanel === 'progress'}>
-        <ProgressPanel />
-      </RenderIf>
-      <RenderIf condition={activePanel === 'info'}>
-        <InfoPanel />
-      </RenderIf>
-      <RenderIf condition={activePanel === 'faq'}>
-        <FaqPanel />
-      </RenderIf>
+      <main className='stage'>
+        <RenderIf condition={activePanel === 'progress'}>
+          <ProgressPanel />
+        </RenderIf>
+        <RenderIf condition={activePanel === 'info'}>
+          <InfoPanel />
+        </RenderIf>
+        <RenderIf condition={activePanel === 'faq'}>
+          <FaqPanel />
+        </RenderIf>
+      </main>
 
+      <footer className='footer'>
+        A fan-made decompilation project. Not affiliated with Rare or Microsoft.
+      </footer>
     </div>
   )
 }

@@ -1,0 +1,38 @@
+// sits to the left of the selected chapter pill
+.knob {
+  position: absolute;
+  left: -4.3em;
+  bottom: -0.6em;
+  width: 4.1em;
+  overflow: visible;
+  pointer-events: none;
+  filter: drop-shadow(1px 3px 2px rgba(0, 0, 0, 0.4));
+  animation: knob-pop 0.35s cubic-bezier(0.2, 1.8, 0.4, 1);
+
+  @media (max-width: 640px) {
+    display: none;
+  }
+}
+
+.knob-stick {
+  transform-box: view-box;
+  transform-origin: 32px 47px;
+  // no pointer to follow: nudge toward the selected option
+  animation: knob-wiggle 1.4s ease-in-out infinite;
+}
+
+// following the pointer
+.knob.tracking .knob-stick {
+  animation: none;
+  transform: rotate(var(--stick, 20deg));
+  transition: transform 0.12s ease-out;
+}
+
+@keyframes knob-wiggle {
+  0%, 100% { transform: rotate(10deg); }
+  50% { transform: rotate(24deg); }
+}
+
+@keyframes knob-pop {
+  from { transform: scale(0.3); opacity: 0; }
+}
