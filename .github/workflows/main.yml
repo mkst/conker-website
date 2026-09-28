@@ -13,6 +13,11 @@ jobs:
       uses: docker://docker.io/python:alpine
       with:
         args: python3 progress/summary.py progress/data public
+    - name: Set up Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: npm
     - name: Build
       run: |
         npm ci

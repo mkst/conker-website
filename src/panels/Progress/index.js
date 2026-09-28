@@ -15,13 +15,13 @@ export const ProgressPanel = () => {
   const section = 'game'
 
   useEffect(() => {
-    fetch('/commits.json')
+    fetch(`${process.env.PUBLIC_URL}/commits.json`)
     .then(resp => resp.json())
     .then(setHistoricData)
   }, [setHistoricData])
 
   useEffect(() => {
-    fetch('/latest.json')
+    fetch(`${process.env.PUBLIC_URL}/latest.json`)
     .then(resp => resp.json())
     .then(setLatestData)
   }, [setLatestData])
