@@ -2,11 +2,16 @@ html, body {
   height: 100%;
   width: 100%;
   margin: 0;
+  background: #fec008;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 #root {
-  height: 100%;
+  min-height: 100%;
   width: 100%;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
 }

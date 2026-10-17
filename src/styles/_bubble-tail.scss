@@ -1,0 +1,57 @@
+// The speech-bubble tail: a dark triangle with a lighter one inset over it,
+// seated on the curve at the far end of the oval on the speaker's side and
+// tilted to follow the edge, so it points out at whoever is talking.
+//   $side: left | right   - which end of the bubble the speaker is on
+//   $top:  where the oval's edge is at that end (as a % of the bubble's height)
+//   $tilt: how far to tilt the tail to follow the curve there
+//   $inset: how far in from the end of the bubble the tail sits
+@mixin bubble-tail($side: left, $top: 75.7%, $tilt: 18deg, $inset: 6%) {
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    // tucked a few pixels inside the edge so it joins the bubble cleanly
+    top: calc(#{$top} - 5px);
+    width: 26px;
+    height: 24px;
+  }
+
+  @if $side == left {
+    &::before,
+    &::after {
+      left: $inset;
+      right: auto;
+      transform-origin: top left;
+      clip-path: polygon(0 0, 100% 0, 10% 100%);
+    }
+
+    &::before {
+      background: rgba(0, 0, 0, 0.75);
+      transform: rotate($tilt);
+    }
+
+    // the inner triangle, shrunk about its own centre as before
+    &::after {
+      background: #e6e6e6;
+      transform: rotate($tilt) translate(13px, 12px) scale(0.8) translateY(-4px) translate(-13px, -12px);
+    }
+  } @else {
+    &::before,
+    &::after {
+      right: $inset;
+      left: auto;
+      transform-origin: top right;
+      clip-path: polygon(0 0, 100% 0, 90% 100%);
+    }
+
+    &::before {
+      background: rgba(0, 0, 0, 0.75);
+      transform: rotate(-$tilt);
+    }
+
+    &::after {
+      background: #e6e6e6;
+      transform: rotate(-$tilt) translate(-13px, 12px) scale(0.8) translateY(-4px) translate(13px, -12px);
+    }
+  }
+}

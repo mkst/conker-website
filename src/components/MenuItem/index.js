@@ -1,16 +1,23 @@
 import React from 'react'
 
+import {Lightbulb} from '../Lightbulb'
+import {Knob} from '../Knob'
+
 import './MenuItem.scss'
 
-export const MenuItem = ({item, active, onClick}) => {
+export const MenuItem = ({chapter, item, active, onClick}) => {
 
-  const activeClass = active ? 'active' : ''
+  const activeClass = active ? 'active' : 'has-lightbulb'
 
   return (
-    <div
-      className={"menu-item " + activeClass}
+    <button
+      type="button"
+      className={"menu-item pause-option " + activeClass}
+      aria-current={active ? 'page' : undefined}
       onClick={onClick}>
-      {item}
-    </div>
+      {active ? <Knob /> : <Lightbulb />}
+      <span className="pause-option-chapter">Chapter {chapter}</span>
+      <span className="pill">{item}</span>
+    </button>
   )
 }

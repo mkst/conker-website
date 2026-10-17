@@ -1,14 +1,112 @@
+// the options float over the blurred world, like the pause menu
 .menu {
-  padding-top: 1em;
-  // font-family: 'Lithos Black Bold';
-  font-family: CCComicrazy;
-  height: 2.5em;
+  display: flex;
+  justify-content: center;
+  gap: 0.6em;
+  max-width: 860px;
+  margin: 3.5em auto 0;
+  position: relative;
+  z-index: 2;
+
+  // room for the joystick knob between options (it's hidden on phones)
+  @media (min-width: 641px) {
+    gap: 4.6em;
+  }
 }
 
-.menu-items-left {
-  float: left;
+// shared by MenuItem + GitHub: a chapter label over a QUIT/CONT... style pill
+.pause-option {
+  position: relative;
+  flex: 0 1 12em;
+  min-width: 0;
+  appearance: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: none;
+
+    .pill {
+      box-shadow: 0 0 0 3px #f3f390, 0 0 0 6px #222317;
+    }
+  }
 }
 
-.menu-items-right {
-  float: right;
+.pause-option-chapter {
+  font-family: var(--font-logo);
+  font-size: clamp(0.6rem, 2.2vw, 0.8rem);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: transparent;
+  background-image: var(--silver-face);
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: var(--dark-rim);
+}
+
+// the QUIT / CONT... capsule: a flat, thick near-black rim with a grey highlight, a
+// see-through middle, and green lettering. Colours sampled from the game's textures.
+.pill {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35em;
+  padding: 0.45em clamp(0.4em, 2vw, 0.8em) 0.35em;
+  border-radius: 999px;
+  border: clamp(3px, 0.8vw, 5px) solid #1b2515;
+  background: rgba(255, 250, 215, 0.28);
+  box-shadow:
+    inset 0 2px 0 #92958f,
+    0 -1px 0 #cdcdcc,
+    0 6px 10px rgba(0, 0, 0, 0.35);
+  font-family: var(--font-logo);
+  font-size: clamp(0.8rem, 3.3vw, 1.6rem);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  // unselected options are plain dark green, like QUIT
+  color: #2f4a24;
+  transition: color 0.15s, background 0.15s, transform 0.2s cubic-bezier(0.2, 1.8, 0.4, 1);
+  white-space: nowrap;
+}
+
+// the highlighted option turns lime - lettering and an inner ring - like CONT...
+@mixin pill-selected {
+  color: #82f534;
+  text-shadow:
+    -1.5px -1.5px 0 #304726, 1.5px -1.5px 0 #304726, -1.5px 1.5px 0 #304726, 1.5px 1.5px 0 #304726;
+  box-shadow:
+    inset 0 0 0 3px #82f534,
+    inset 0 0 0 5px #c1e99c,
+    0 -1px 0 #cdcdcc,
+    0 6px 10px rgba(0, 0, 0, 0.35);
+}
+
+.pause-option:hover .pill,
+.pause-option:focus-visible .pill {
+  @include pill-selected;
+  transform: scale(1.06);
+}
+
+// the selected option pulses, like the highlighted choice in the pause menu
+.pause-option.active {
+  cursor: default;
+
+  .pill {
+    @include pill-selected;
+    animation: pill-pulse 1.4s ease-in-out infinite;
+  }
+}
+
+@keyframes pill-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.07); }
 }

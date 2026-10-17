@@ -11,12 +11,21 @@ export const HistoricProgressPlot = ({
 
   const [plotData, setPlotData] = useState(null)
   const [plot, setPlot] = useState(null)
+  // plotly measures legend text on first draw - wait for our fonts or labels get clipped
+  const [fontsReady, setFontsReady] = useState(!document.fonts)
+
+  useEffect(() => {
+    if (document.fonts) {
+      document.fonts.load('14px "Lithos Black Bold"')
+        .catch(() => {})
+        .then(() => setFontsReady(true))
+    }
+  }, [])
 
   useEffect(() => {
     if ((data === null) || (data == null)) {
       return null
     }
-    console.log(data)
     if (Object.keys(data).indexOf("commits") === -1) {
       return null
     }
@@ -55,7 +64,6 @@ export const HistoricProgressPlot = ({
         }
       }
     }
-    console.log(x, y_bytes)
     setPlotData({
       x: x,
       y_bytes: y_bytes,
@@ -66,7 +74,7 @@ export const HistoricProgressPlot = ({
   }, [data, version, section])
 
   useEffect(() => {
-    if (plotData === null) {
+    if (plotData === null || !fontsReady) {
       return;
     }
     setPlot(<Plot
@@ -77,8 +85,13 @@ export const HistoricProgressPlot = ({
           name: 'bytes',
           mode: 'lines',
           fill: 'tozeroy',
-          marker: {
-            color: '#382506',
+          // colours from the hive texture
+          fillcolor: 'rgba(254, 192, 8, 0.55)',
+          hovertemplate: '%{text}<extra>bytes</extra>',
+          line: {
+            color: '#5b3b08',
+            width: 3,
+            shape: 'hv',
           },
         },{
           x: plotData.x,
@@ -87,26 +100,42 @@ export const HistoricProgressPlot = ({
           name: 'functions',
           mode: 'lines',
           fill: 'tozeroy',
+          fillcolor: 'rgba(107, 53, 20, 0.45)',
+          hovertemplate: '%{text}<extra>functions</extra>',
           visible: 'legendonly',
-          marker: {
-            color: '#6a4108',
+          line: {
+            color: '#6b3514',
+            width: 3,
+            shape: 'hv',
           },
         },
       ]}
       layout={{
         font: {
           family: 'Lithos Black Bold',
-          color: '#111'
+          color: '#2b1606'
         },
-        margin: {'t': 20, 'b': 40, 'l': 40, 'r': 40},
+        margin: {'t': 10, 'b': 40, 'l': 56, 'r': 16},
         showlegend: true,
-        legend: {'orientation': 'h'},
+        legend: {orientation: 'h', x: 0, y: -0.15, font: {size: 14}},
+        hoverlabel: {
+          bgcolor: '#fffaf0',
+          bordercolor: '#2b1606',
+          font: {family: 'Lithos Black Bold', color: '#2b1606'},
+        },
         xaxis: {
           showgrid: false,
+          linecolor: '#2b1606',
+          linewidth: 3,
         },
         yaxis: {
-          title: 'Percentage Complete',
-          showgrid: false,
+          title: 'Percent complete',
+          ticksuffix: '%',
+          rangemode: 'tozero',
+          gridcolor: 'rgba(43, 22, 6, 0.12)',
+          linecolor: '#2b1606',
+          linewidth: 3,
+          zeroline: false,
         },
         paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor: 'rgba(0,0,0,0)',
@@ -114,7 +143,7 @@ export const HistoricProgressPlot = ({
       config={{displayModeBar: false, responsive: true}}
       style={{width: '100%', height: '100%'}}
     />)
-  }, [plotData])
+  }, [plotData, fontsReady])
 
   return <div className='historic-progress'>
     {plot}

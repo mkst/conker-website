@@ -1,0 +1,112 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin: 0 auto 1.25em;
+  max-width: 860px;
+}
+
+// the box-art logo, remastered: stacked BAD / FUR / DAY. in Lithos with a bronze
+// extrusion, glossy molten-orange faces and a light sweep; "Conker's" in red brush script
+.logo {
+  position: relative;
+  margin: 0;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: normal;
+}
+
+.logo-bfd {
+  display: block;
+  text-align: left;
+  font-family: var(--font-logo);
+  font-size: clamp(3.8rem, 14vw, 6.5rem);
+  filter:
+    drop-shadow(0 0 1px #2a1000)
+    drop-shadow(0 0 16px rgba(255, 200, 90, 0.45))
+    drop-shadow(5px 12px 10px rgba(0, 0, 0, 0.5));
+}
+
+.logo-row {
+  display: block;
+  white-space: nowrap;
+  line-height: 0.82;
+}
+
+// each letter is a solid, extruded copy (textShadow set inline) with the
+// gradient face drawn over it
+.logo-letter {
+  position: relative;
+  display: inline-block;
+  color: #6d3207;
+  transform: translateY(var(--dy)) rotate(var(--r));
+
+  &::after {
+    content: attr(data-letter);
+    position: absolute;
+    inset: 0;
+    color: transparent;
+    text-shadow: none;
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-image:
+      linear-gradient(115deg, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0.75) 50%, rgba(255, 255, 255, 0) 60%),
+      linear-gradient(180deg, #fff1b8 0%, #ffc34a 30%, #f58a17 48%, #b94a06 52%, #f0801a 78%, #ffb347 100%);
+    background-size: 300% 100%, 100% 100%;
+    -webkit-text-stroke: 1.5px #fff0b0;
+    animation: logo-shine 4.5s ease-in-out infinite;
+    animation-delay: calc(var(--i) * 0.06s);
+  }
+}
+
+.logo-conkers {
+  position: absolute;
+  z-index: 2;
+  top: -0.3em;
+  left: -0.1em;
+  font-family: 'Caveat Brush', var(--font-comic);
+  font-size: clamp(2.3rem, 8.5vw, 4.2rem);
+  line-height: 1;
+  white-space: nowrap;
+  transform: rotate(-9deg);
+  color: transparent;
+  background-image: linear-gradient(180deg, #ff6a5a 0%, #e0141e 50%, #8e070d 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter:
+    drop-shadow(1.5px 0 0 #3a0203)
+    drop-shadow(-1.5px 0 0 #3a0203)
+    drop-shadow(0 1.5px 0 #3a0203)
+    drop-shadow(0 -1.5px 0 #3a0203)
+    drop-shadow(3px 5px 4px rgba(0, 0, 0, 0.45));
+}
+
+// like the stone chapter name under PAUSED, tilted back into the screen
+.logo-stamp {
+  margin-top: 0.35em;
+  font-family: var(--font-logo);
+  font-size: clamp(1.3rem, 4.5vw, 1.8rem);
+  letter-spacing: 0.35em;
+  padding-left: 0.35em;
+  text-transform: uppercase;
+  color: transparent;
+  background-image: var(--silver-face);
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: var(--dark-rim);
+  transform: perspective(300px) rotateX(24deg) scaleX(1.2);
+}
+
+.header-tagline {
+  margin: 1.4em auto 0;
+  display: inline-block;
+  max-width: 26em;
+  padding: 1.1em 3em;
+}
+
+@keyframes logo-shine {
+  0%, 55% { background-position: 150% 0, 0 0; }
+  100% { background-position: -150% 0, 0 0; }
+}

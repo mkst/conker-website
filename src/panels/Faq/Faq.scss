@@ -1,16 +1,73 @@
-.question {
-  font-family: 'CCComicrazy';
-  padding-top: 1.5em;
-  font-size: 1.2em;
-  color: #111;
+@import '../../styles/bubble-tail';
+
+// the FAQ as a conversation: Conker asks from the left, Birdy answers from the right
+.faq {
+  // Gregg sits in the top corner
+  position: relative;
+
+  // keep the heading clear of him
+  .panel-headline {
+    padding-right: clamp(64px, 12vw, 110px);
+  }
 }
 
-.answer {
-  font-family: 'CCComicrazy';
-  padding-top: 0.75em;
-  color: #111;
+.faq-line {
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(0.4em, 2vw, 1em);
+  margin-top: 1.9em;
+}
+
+.faq .gregg + .faq-line {
+  margin-top: 0.3em;
+}
+
+.faq-reply {
+  flex-direction: row-reverse;
+  margin-top: 1.3em;
+}
+
+// in-game speech bubbles (see .speech-bubble), with a tail at the speaker's end
+.faq .question,
+.faq .answer {
+  max-width: 88%;
+  margin: 0 0 1.6em;
+  border-radius: 42% / 50%;
+  padding: 1.3em 3.2em;
+
+  // same oval, but less side padding so phone-width bubbles aren't a sliver
+  @media (max-width: 640px) {
+    max-width: 100%;
+    padding: 1.1em 1.9em;
+  }
+
+}
+
+.faq .question {
+  font-size: 1.1em;
+  @include bubble-tail(left);
+
+  // phone bubbles are tall, so their ends curve steeply: sit a little further round
+  @media (max-width: 640px) {
+    @include bubble-tail(left, 87.3%, 40deg, 14%);
+  }
+}
+
+// answers are written in normal case - they're long
+.faq .answer {
+  text-transform: none;
+  letter-spacing: 0;
+  line-height: 1.5;
+  @include bubble-tail(right);
+
+  @media (max-width: 640px) {
+    @include bubble-tail(right, 87.3%, 40deg, 14%);
+  }
 }
 
 .answer a {
+  color: #8a2a06;
   text-decoration: underline;
+  text-decoration-thickness: 2px;
+  font-weight: bold;
 }
