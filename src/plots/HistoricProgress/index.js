@@ -14,11 +14,11 @@ export const HistoricProgressPlot = ({
 
   useEffect(() => {
     if ((data === null) || (data == null)) {
-      return null
+      return;
     }
     console.log(data)
     if (Object.keys(data).indexOf("commits") === -1) {
-      return null
+      return;
     }
 
     const x = []
